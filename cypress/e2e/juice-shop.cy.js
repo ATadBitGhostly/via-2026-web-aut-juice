@@ -2,6 +2,7 @@ import { HomePage } from "../pageObjects/homePage";
 import { LoginPage } from "../pageObjects/loginPage";
 import { RegisterPage } from "../pageObjects/registerPage";
 import { BasketPage, SelectAddressPage, DeliveryMethodPage, PaymentOptionsPage, OrderSummaryPage, OrderCompletionPage } from "../pageObjects/paymentOptionPages";
+import { SavedAddressesPage, CreateAddressPage } from "../pageObjects/addressRelatedPages";
 
 
 
@@ -215,22 +216,45 @@ describe("Juice-shop scenarios", () => {
   });
 
     // Create scenario - Add address
-    it.only("Add address", () => {
+    it("Add address", () => {
     // Click on Account
       HomePage.accountButton.click();
     // Click on Orders & Payment
-      cy.get('[aria-label="Show Orders and Payment Menu"]').invoke('show');
+      HomePage.orderPaymentButton.click();
     // Click on My saved addresses
+      HomePage.savedAddressesButton.click();
     // Create page object - SavedAddressesPage
     // Click on Add New Address
+      SavedAddressesPage.newAddressButton.click();
     // Create page object - CreateAddressPage
     // Fill in the necessary information
+      const country = "Guise";
+      CreateAddressPage.inputCountry.type(country);
+      const name = "Grind";
+      CreateAddressPage.inputName.type(name);
+      const phone = "123456789";
+      CreateAddressPage.inputPhone.type(phone);
+      const code = "GI-4321";
+      CreateAddressPage.inputCode.type(code);
+      const address = "This is an Address 12345";
+      CreateAddressPage.inputAddress.type(address);
+      const city = "Glide";
+      CreateAddressPage.inputCity.type(city);
+      const state = "Glint";
+      CreateAddressPage.inputState.type(state);
     // Click Submit button
+      CreateAddressPage.submitButton.click();
     // Validate that previously added address is visible
+      SavedAddressesPage.confirmAddition.contains(country).should('be.visible');
+      SavedAddressesPage.confirmAddition.contains(name).should('be.visible');
+      SavedAddressesPage.confirmAddition.contains(code).should('be.visible');
+      SavedAddressesPage.confirmAddition.contains(address).should('be.visible');
+      SavedAddressesPage.confirmAddition.contains(city).should('be.visible');
+      SavedAddressesPage.confirmAddition.contains(state).should('be.visible');
     });
     
     // Create scenario - Add payment option
-    it("Add payment option", () => {
+    it.only("Add payment option", () => {
     // Click on Account
     // Click on Orders & Payment
     // Click on My payment options
