@@ -58,10 +58,22 @@ export class HomePage extends BasePage {
     }
 
     static get itemsPerPageMenu() {
-        return cy.get('mat-mdc-paginator-touch-target');
+        return cy.get('div mat-form-field');
     }
 
     static get itemsPerPageMenuOptions() {
-        return cy.get('mat-option');
+        return cy.get('#mat-select-0-panel');
+    }
+
+    static get addToBasketButton() {
+        return cy.get('button[aria-label="Add to Basket"]');
+    }
+
+    static get yourBasketButton() {
+        return cy.get('button[aria-label="Show the shopping cart"]');
+    }
+
+    static get orderPaymentButton() {
+        return cy.get('[aria-label="Show Orders and Payment Menu"]');
     }
 }

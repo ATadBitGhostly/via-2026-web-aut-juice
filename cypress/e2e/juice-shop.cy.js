@@ -1,6 +1,9 @@
 import { HomePage } from "../pageObjects/homePage";
 import { LoginPage } from "../pageObjects/loginPage";
 import { RegisterPage } from "../pageObjects/registerPage";
+import { BasketPage, SelectAddressPage, DeliveryMethodPage, PaymentOptionsPage, OrderSummaryPage, OrderCompletionPage } from "../pageObjects/paymentOptionPages";
+
+
 
 describe("Juice-shop scenarios", () => {
   context("Without auto login", () => {
@@ -81,13 +84,6 @@ describe("Juice-shop scenarios", () => {
       HomePage.productCardsMenu.contains("Sour but full of vitamins.").should("be.visible");
     });
 
-  });
-  context("With auto login", () => {
-    beforeEach(() => {
-      cy.login("demo", "demo");
-      HomePage.visit();
-    });
-
       // Create scenario - Search 500ml and validate Lemon, while having multiple cards
     it("Search 500ml and validate Lemon", () => {
       // Click on search icon
@@ -99,13 +95,7 @@ describe("Juice-shop scenarios", () => {
       // Validate that the card (should) contains "Sour but full of vitamins."  
       HomePage.productCardsMenu.contains("Sour but full of vitamins.").should("be.visible");
     });
-  });
-  context("With auto login", () => {
-    beforeEach(() => {
-      cy.login("demo", "demo");
-      HomePage.visit();
-    });
-  
+
     // Create scenario - Search 500ml and validate cards
     it("Search 500ml and validate cards", () => {
     // Click on search icon
@@ -129,115 +119,107 @@ describe("Juice-shop scenarios", () => {
     // Validate that the card (should) contains "Sweet & tasty!"
       HomePage.productCardsMenu.contains("Sweet & tasty!").should("be.visible");
     });
-  });
-  context("With auto login", () => {
-    beforeEach(() => {
-      cy.login("demo", "demo");
-      HomePage.visit();
-    });
 
     // Create scenario - Read a review
     it("Read reviews", () => {
     // Click on search icon
-    HomePage.searchIcon.click();
+      HomePage.searchIcon.click();
     // Search for King
-    HomePage.searchInput.type("King{enter}");
+      HomePage.searchInput.type("King{enter}");
     // Select a product card - OWASP Juice Shop "King of the Hill" Facemask
-    HomePage.productCards.contains("OWASP Juice Shop \"King of the Hill\" Facemask").click();
+      HomePage.productCards.contains("OWASP Juice Shop \"King of the Hill\" Facemask").click();
     // Click expand reviews button/icon (wait for reviews to appear)
-    HomePage.reviewExpandButton.click();
+      HomePage.reviewExpandButton.click();
     // Validate review - K33p5 y0ur ju1cy 5plu773r 70 y0ur53lf!
-    HomePage.productCardsMenu.contains("K33p5 y0ur ju1cy 5plu773r 70 y0ur53lf!").should("be.visible");
-    });
-  });
-    
-  context("With auto login", () => {
-    beforeEach(() => {
-      cy.login("demo", "demo");
-      HomePage.visit();
+      HomePage.productCardsMenu.contains("K33p5 y0ur ju1cy 5plu773r 70 y0ur53lf!").should("be.visible");
     });
 
     // Create scenario - Add a review
     it("Read reviews", () => {
     // Click on search icon
-    HomePage.searchIcon.click();
+      HomePage.searchIcon.click();
     // Search for Raspberry
-    HomePage.searchInput.type("Raspberry{enter}");
+      HomePage.searchInput.type("Raspberry{enter}");
     // Select a product card - Raspberry Juice (1000ml)
-    HomePage.productCards.contains("Raspberry Juice (1000ml)").click();
+      HomePage.productCards.contains("Raspberry Juice (1000ml)").click();
     // Type in review - "Tastes like metal"
-    const reviewInput = "Tastes like metal";
-    HomePage.reviewInput.should("be.visible").click();
-    HomePage.reviewInput.type(reviewInput);
+      const reviewInput = "Tastes like metal";
+      HomePage.reviewInput.should("be.visible").click();
+      HomePage.reviewInput.type(reviewInput);
     // Click Submit
-    HomePage.reviewSubmitButton.click();
+      HomePage.reviewSubmitButton.click();
     // Click expand reviews button/icon (wait for reviews to appear)
-    HomePage.reviewExpandButton.click();
+      HomePage.reviewExpandButton.click();
     // Validate review - "Tastes like metal"
-    HomePage.productCardsMenu.contains(reviewInput).should("be.visible");
-    });
-  });
-    
-  context("With auto login", () => {
-    beforeEach(() => {
-      cy.login("demo", "demo");
-      HomePage.visit();
+      HomePage.productCardsMenu.contains(reviewInput).should("be.visible");
     });
     
     // Create scenario - Validate product card amount
-    it.only("Validate product card amount", () => {
+    it("Validate product card amount", () => {
     // Validate that the default amount of cards is 12
-    HomePage.productCards.should("have.length", 12);
+      HomePage.productCards.should("have.length", 12);
     // Change items per page (at the bottom of page) to 24
-    HomePage.itemsPerPageMenu.click();
-    HomePage.itemsPerPageMenuOptions.contains("24").click();
+      HomePage.itemsPerPageMenu.click();
+      HomePage.itemsPerPageMenuOptions.contains("24").click();
     // Validate that the amount of cards is 24
-
+      HomePage.productCards.should("have.length", 24);
     // Change items per page (at the bottom of page) to 36
-    // Validate that the amount of cards is 35
+      HomePage.itemsPerPageMenu.click();
+      HomePage.itemsPerPageMenuOptions.contains("36").click();
+    // Validate that the amount of cards is 36
+      HomePage.productCards.should("have.length", 36);
     });
-  });
-    
-  context("With auto login", () => {
-    beforeEach(() => {
-      cy.login("demo", "demo");
-      HomePage.visit();
-    });
-    
+
     // Create scenario - Buy Girlie T-shirt
     it("Buy Girlie T-shirt", () => {
     // Click on search icon
+      HomePage.searchIcon.click();
     // Search for Girlie
+      HomePage.searchInput.type("Girlie{enter}");
     // Add to basket "Girlie"
+      HomePage.addToBasketButton.click();
     // Click on "Your Basket" button
+      HomePage.yourBasketButton.click();
+    // Instead of making new page objects i decided to just make new classes since these pages wouldnt have multiple functions but only 1 or 2 gets.
     // Create page object - BasketPage
     // Click on "Checkout" button
+      BasketPage.checkoutButton.click();
     // Create page object - SelectAddressPage
     // Select address containing "United Fakedom"
+      SelectAddressPage.addressCards.contains("United Fakedom").click();
     // Click Continue button
+      SelectAddressPage.continueButton.click();
     // Create page object - DeliveryMethodPage
     // Select delivery speed Standard Delivery
+      DeliveryMethodPage.deliveryOptions.contains("Standard Delivery").click();
     // Click Continue button
+      DeliveryMethodPage.continueButton.click();
     // Create page object - PaymentOptionsPage
     // Select card that ends with "5678"
+      PaymentOptionsPage.paymentOption.invoke('text').then((text) => {
+        if (text.includes('5678')) {
+          PaymentOptionsPage.paymentOptionRadiobutton.click();
+        }
+      })
+
     // Click Continue button
+      PaymentOptionsPage.continueButton.click();
     // Create page object - OrderSummaryPage
     // Click on "Place your order and pay"
+      OrderSummaryPage.checkoutButton.click();
     // Create page object - OrderCompletionPage
     // Validate confirmation - "Thank you for your purchase!"
-    });
+
+      OrderCompletionPage.thankYouMessage.contains("Thank you for your purchase!").should("be.visible");
+
   });
-    
-  context("With auto login", () => {
-    beforeEach(() => {
-      cy.login("demo", "demo");
-      HomePage.visit();
-    });
 
     // Create scenario - Add address
-    it("Add address", () => {
+    it.only("Add address", () => {
     // Click on Account
+      HomePage.accountButton.click();
     // Click on Orders & Payment
+      cy.get('[aria-label="Show Orders and Payment Menu"]').invoke('show');
     // Click on My saved addresses
     // Create page object - SavedAddressesPage
     // Click on Add New Address
@@ -245,13 +227,6 @@ describe("Juice-shop scenarios", () => {
     // Fill in the necessary information
     // Click Submit button
     // Validate that previously added address is visible
-    });
-  });
-    
-  context("With auto login", () => {
-    beforeEach(() => {
-      cy.login("demo", "demo");
-      HomePage.visit();
     });
     
     // Create scenario - Add payment option
